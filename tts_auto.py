@@ -4,11 +4,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time 
+from datetime import datetime
 
 PATH = "C:\Program Files (x86)\chromedriver.exe"
 
-username = "student id here "
-password = "password here"
+username = "Your student id"
+password = "Your password here"
 
 driver = webdriver.Chrome(PATH)
 
@@ -42,26 +43,30 @@ driver.switch_to.alert.accept()
 window_before = driver.window_handles[0]
 driver.switch_to.window(window_before)
 
-daily_declaration_link = driver.find_element_by_link_text("Daily Declaration")
-daily_declaration_link.click()
+current_hour = datetime.now().hour
 
-window_after = driver.window_handles[2]
-driver.switch_to.window(window_after)
+if current_hour  < 18: 
+    # only do daily declaration if it is the morning run 
+    daily_declaration_link = driver.find_element_by_link_text("Daily Declaration")
+    daily_declaration_link.click()
 
-travelled_to_other_countries_no_button = driver.find_element_by_id("pgContent1_rbVisitOtherCountryNo")
-travelled_to_other_countries_no_button.click()
+    window_after = driver.window_handles[2]
+    driver.switch_to.window(window_after)
 
-quarantine_no_button = driver.find_element_by_id("pgContent1_rbNoticeNo")
-quarantine_no_button.click()
+    travelled_to_other_countries_no_button = driver.find_element_by_id("pgContent1_rbVisitOtherCountryNo")
+    travelled_to_other_countries_no_button.click()
 
-shn_no_button = driver.find_element_by_id("pgContent1_rbContactNo")
-shn_no_button.click()
+    quarantine_no_button = driver.find_element_by_id("pgContent1_rbNoticeNo")
+    quarantine_no_button.click()
 
-mc_no_button = driver.find_element_by_id("pgContent1_rbMCNo")
-mc_no_button.click()
+    shn_no_button = driver.find_element_by_id("pgContent1_rbContactNo")
+    shn_no_button.click()
 
-daily_declaration_submit_button = driver.find_element_by_id("pgContent1_btnSave")
-daily_declaration_submit_button.click()
-driver.switch_to.alert.accept()
+    mc_no_button = driver.find_element_by_id("pgContent1_rbMCNo")
+    mc_no_button.click()
+
+    daily_declaration_submit_button = driver.find_element_by_id("pgContent1_btnSave")
+    daily_declaration_submit_button.click()
+    driver.switch_to.alert.accept()
 
 driver.quit()
